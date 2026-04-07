@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Architect Leader Mindmap – Trias Nugra</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #05070a;
+    --surface: #0d1117;
+    --card: #111521;
+    --border: #212633;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #10b981;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --accent6: #ec4899;
+    --text: #f8fafc;
+    --muted: #94a3b8;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 10;
+    padding: 3rem 2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0d1117 0%, #05070a 100%);
+  }
+
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: var(--accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 30%, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-top: 1rem;
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .profile-pill {
+    margin-left: auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1rem 1.5rem;
+    min-width: 240px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .profile-pill .name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+  .profile-pill .role { color: var(--muted); margin-top: 0.2rem; font-size: 0.85rem; }
+  .profile-pill .status { color: var(--accent3); font-weight: 700; margin-top: 0.5rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,7,10,0.8);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+  }
+
+  .tabs {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    flex-shrink: 0;
+    padding: 1.2rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    white-space: nowrap;
+    background: none;
+    border-top: none; border-left: none; border-right: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.02); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(59,130,246,0.05); }
+
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    position: relative;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(59,130,246,0.1);
+    transform: translateY(-4px);
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--card-accent, var(--accent));
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  ul.point-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  ul.point-list li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+  }
+
+  ul.point-list li::before {
+    content: '→';
+    color: var(--card-accent, var(--accent));
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .highlight { color: #fff; font-weight: 600; }
+  .insight-tag {
+    display: inline-block;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.4);
+    color: var(--accent3);
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+
+  .mindmap-center {
+    text-align: center;
+    background: radial-gradient(circle at center, #1e293b 0%, #0d1117 100%);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 3rem 2rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+
+  .center-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .center-sub { color: var(--muted); font-size: 1rem; margin-bottom: 2rem; }
+
+  .branch-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+  }
+
+  .branch-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.7rem 1.2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .branch-chip:hover {
+    border-color: var(--accent);
+    color: #fff;
+    background: rgba(59,130,246,0.1);
+    transform: scale(1.05);
+  }
+
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 18px;
+    top: 36px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    background: var(--card-accent, var(--accent));
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 2;
+  }
+
+  .step-body { padding-bottom: 1.5rem; }
+  .step-label { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; color: #fff; }
+  .step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .swot-box { border-radius: 16px; padding: 1.2rem; border: 1px solid var(--border); }
+  .swot-box.s { background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2); }
+  .swot-box.w { background: rgba(239,68,68,0.05); border-color: rgba(239,68,68,0.2); }
+  .swot-box.o { background: rgba(59,130,246,0.05); border-color: rgba(59,130,246,0.2); }
+  .swot-box.t { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.2); }
+
+  .swot-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.1em;
+  }
+  .swot-box.s .swot-label { color: var(--accent3); }
+  .swot-box.w .swot-label { color: var(--accent5); }
+  .swot-box.o .swot-label { color: var(--accent); }
+  .swot-box.t .swot-label { color: var(--accent4); }
+
+  .qa-list { display: flex; flex-direction: column; gap: 0.8rem; }
+  .qa-item { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  .qa-q {
+    padding: 1.2rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+  }
+  .qa-q:hover { background: rgba(255,255,255,0.03); }
+  .qa-item.open .qa-q { border-bottom: 1px solid var(--border); background: rgba(59,130,246,0.05); }
+  .qa-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    line-height: 1.7;
+  }
+  .qa-item.open .qa-a { max-height: 800px; }
+  .qa-a-inner { padding: 1.5rem; }
+
+  .q-cat {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    margin-right: 0.8rem;
+  }
+  .cat-leadership { background: rgba(59,130,246,0.2); color: var(--accent); }
+  .cat-ops { background: rgba(16,185,129,0.2); color: var(--accent3); }
+  .cat-people { background: rgba(236,72,153,0.2); color: var(--accent6); }
+  .cat-self { background: rgba(139,92,246,0.2); color: var(--accent2); }
+
+  .tip-card {
+    background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 20px;
+    padding: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th {
+    text-align: left;
+    padding: 1rem;
+    background: rgba(255,255,255,0.03);
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.03); color: #cbd5e1; }
+
+  @media (max-width: 768px) {
+    .swot-grid { grid-template-columns: 1fr; }
+    .header-inner { flex-direction: column; align-items: center; text-align: center; }
+    .profile-pill { margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="badge">🎯 Interview Answer Guide</div>
+      <h1>Team Leader Interview<br>Simple Answer Guide</h1>
+      <p class="subtitle">Clear, natural answers for your TL interview — written in plain English so you can speak with confidence, not read from a script.</p>
+    </div>
+    <div class="profile-pill">
+      <div class="name">Trias Nugra, M.Pd.</div>
+      <div class="role">Aspiring Team Leader / Supervisor</div>
+      <div class="status">🏆 Tier 1 Best Agent · Researcher · Developer</div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('overview')">🗺 Philosophy</button>
+    <button class="tab" onclick="switchTab('leadership')">👑 Leverage</button>
+    <button class="tab" onclick="switchTab('operations')">⚙️ Friction Removal</button>
+    <button class="tab" onclick="switchTab('people')">🤝 Human Capital</button>
+    <button class="tab" onclick="switchTab('scenarios')">🎭 High-Stakes</button>
+    <button class="tab" onclick="switchTab('qa')">💬 Narrative Prep</button>
+    <button class="tab" onclick="switchTab('tips')">✨ Presence</button>
+  </div>
+</nav>
+
+<main class="content">
+
+  <!-- OVERVIEW -->
+  <section id="overview" class="section active">
+    <div class="mindmap-center">
+      <div class="center-title">Your TL Interview Answers</div>
+      <div class="center-sub">Simple, honest, and easy to say — pick a topic and practice out loud.</div>
+      <div class="branch-grid">
+        <div class="branch-chip" onclick="switchTab('leadership')">👑 Leadership Style</div>
+        <div class="branch-chip" onclick="switchTab('operations')">⚙️ Operations & KPI</div>
+        <div class="branch-chip" onclick="switchTab('people')">🤝 Handling Your Team</div>
+        <div class="branch-chip" onclick="switchTab('scenarios')">🎭 Tough Situations</div>
+        <div class="branch-chip" onclick="switchTab('qa')">💬 Key Q&A Answers</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent3)">
+        <div class="card-title"><span class="icon">🎯</span>Your Strengths & Challenges</div>
+        <div class="swot-grid">
+          <div class="swot-box s">
+            <div class="swot-label">Your Strengths</div>
+            <ul class="point-list">
+              <li><span class="highlight">Best Agent Award:</span> You know the job from the inside.</li>
+              <li><span class="highlight">Strong empathy:</span> You understand how your team feels.</li>
+              <li><span class="highlight">Good communicator:</span> You can explain things clearly.</li>
+              <li><span class="highlight">3+ years experience:</span> You know the SOP, tools, and flow.</li>
+            </ul>
+          </div>
+          <div class="swot-box w">
+            <div class="swot-label">Areas to Grow</div>
+            <ul class="point-list">
+              <li>New to the TL role — still learning how to lead.</li>
+              <li>Moving from doing the work to guiding others.</li>
+              <li>Building confidence to speak without notes.</li>
+            </ul>
+          </div>
+          <div class="swot-box o">
+            <div class="swot-label">Your Opportunity</div>
+            <ul class="point-list">
+              <li>Help your team become the best in the site.</li>
+              <li>Use your agent experience to truly understand mods.</li>
+              <li>Grow future team leaders from your own team.</li>
+            </ul>
+          </div>
+          <div class="swot-box t">
+            <div class="swot-label">Risks to Manage</div>
+            <ul class="point-list">
+              <li>Managing friends — keeping it professional.</li>
+              <li>Staying empathetic but still holding standards.</li>
+              <li>Team members who are used to "just okay" work.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="--card-accent: var(--accent)">
+        <div class="card-title"><span class="icon">🗝</span>Your Core Message as a TL</div>
+        <ul class="point-list">
+          <li><span class="highlight">Set a high bar:</span> I don't want a team that just "passes." I want a team that actually grows and does their best work.</li>
+          <li><span class="highlight">Remove what blocks them:</span> If mods are slow or making mistakes, I ask why first — is it the SOP? The tools? The training?</li>
+          <li><span class="highlight">Trust their judgment:</span> SOPs are a starting point, not the final word. I want my team to think, not just follow steps blindly.</li>
+          <li><span class="highlight">Multiply the team:</span> My job as TL is not to be the best person anymore — it's to help 10–20 people do their best.</li>
+        </ul>
+        <div style="margin-top:1.5rem; padding:1rem; background:rgba(59,130,246,0.1); border-radius:12px; border-left:4px solid var(--accent);">
+          <div style="font-size:0.8rem; font-weight:800; color:var(--accent); margin-bottom:0.5rem; text-transform:uppercase;">💬 Say This in Your Interview</div>
+          <div style="font-size:0.9rem; color:#fff; line-height:1.6;">"I was the best agent because I worked hard on myself. Now I want to help my whole team reach that same level. That's why I'm applying for this role."</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section id="leadership" class="section">
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent2)">
+        <div class="card-title"><span class="icon">🏛</span>How You Lead Step by Step</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" style="background:var(--accent2)">1</div>
+            <div class="step-body">
+              <div class="step-label">Look at the Data First</div>
+              <div class="step-desc">Before doing anything, I check the numbers — AHT, accuracy, productivity. I look for patterns, not just individual bad days.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent2)">2</div>
+            <div class="step-body">
+              <div class="step-label">Find the Root Cause</div>
+              <div class="step-desc">Is it a knowledge gap? A motivation problem? A personal issue? I need to know the real reason before I give any solution.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent2)">3</div>
+            <div class="step-body">
+              <div class="step-label">Apply the Right Fix, Then Check Again</div>
+              <div class="step-desc">I give the right support — coaching, refreshment, or a personal talk — then I follow up to see if it's working. If not, I adjust.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="--card-accent: var(--accent4)">
+        <div class="card-title"><span class="icon">🚀</span>What Makes You Different as a TL</div>
+        <ul class="point-list">
+          <li><span class="highlight">You've done the job:</span> You were an agent. You know what it's like to struggle with a hard case. Use that to understand your mods better.</li>
+          <li><span class="highlight">Empathy with standards:</span> You care about your team's feelings, but you also hold them to a good standard. It's not one or the other — it's both.</li>
+          <li><span class="highlight">Teach, don't just tell:</span> When a mod makes mistakes, don't just say "follow the SOP." Help them understand why the SOP exists and how to use their own judgment.</li>
+          <li><span class="highlight">Your goal is their growth:</span> You want at least one mod from your team to be ready for a TL role in the future. That's how you measure real success.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPERATIONS -->
+  <section id="operations" class="section">
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent3)">
+        <div class="card-title"><span class="icon">⚙️</span>How You Improve Team Performance</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" style="background:var(--accent3)">1</div>
+            <div class="step-body">
+              <div class="step-label">Check What's Slowing Them Down</div>
+              <div class="step-desc">I look for where mods are getting stuck. Is the SOP unclear? Is the tool slow? Do they not have enough knowledge?</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent3)">2</div>
+            <div class="step-body">
+              <div class="step-label">Fix the Hard Cases First</div>
+              <div class="step-desc">The difficult cases are the ones that take the most time. If I solve those, the team's AHT will drop the most. Focus on the hardest problems, not the easy ones.</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent3)">3</div>
+            <div class="step-body">
+              <div class="step-label">Share the Solution with Everyone</div>
+              <div class="step-desc">When I fix one person's problem, I share it with the whole team. That way, the same issue doesn't happen again for someone else.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="--card-accent: var(--accent)">
+        <div class="card-title"><span class="icon">📈</span>How You Think About KPIs</div>
+        <table>
+          <tr>
+            <th>Metric</th>
+            <th>What Most TLs Say</th>
+            <th>What You Say</th>
+          </tr>
+          <tr>
+            <td>AHT</td>
+            <td>"Work faster"</td>
+            <td>"Let's find out what's making them slow and remove it"</td>
+          </tr>
+          <tr>
+            <td>Accuracy</td>
+            <td>"Just read the SOP"</td>
+            <td>"Let's make sure they understand why, not just what"</td>
+          </tr>
+          <tr>
+            <td>Productivity</td>
+            <td>"Do more cases"</td>
+            <td>"Let's see where time is being lost and fix that"</td>
+          </tr>
+          <tr>
+            <td>Latency</td>
+            <td>"Clear the queue faster"</td>
+            <td>"Let's look at how cases flow in and out and improve the process"</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEOPLE -->
+  <section id="people" class="section">
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent5)">
+        <div class="card-title"><span class="icon">⚠️</span>Handling a Mod Who Is Struggling</div>
+        <ul class="point-list">
+          <li><span class="highlight">Bad performance but good attitude?</span> I'll always choose this person. Skills can be taught. Attitude is much harder to change.</li>
+          <li><span class="highlight">Find the exact problem:</span> I don't just say "they're bad at the job." I look at specific cases — where exactly do they make mistakes, and why?</li>
+          <li><span class="highlight">Give them a real chance:</span> I give them support and a clear goal to hit. If they're willing to try, I'm willing to help.</li>
+          <li><span class="highlight">Be honest if it's not working:</span> If a mod keeps having a bad attitude and refuses to change, I follow the proper steps — watchlist, warnings, and HR if needed.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="--card-accent: var(--accent6)">
+        <div class="card-title"><span class="icon">🚪</span>When a Mod Wants to Resign</div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num" style="background:var(--accent6)">1</div>
+            <div class="step-body">
+              <div class="step-label">Find Out the Real Reason</div>
+              <div class="step-desc">A resignation is usually the last step, not the first sign. I ask early — are they feeling burned out, bored, or is something bothering them at work?</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent6)">2</div>
+            <div class="step-body">
+              <div class="step-label">Offer a Real Solution, Not Just Words</div>
+              <div class="step-desc">If it's about performance, I offer coaching and a clearer path. If it's about the work environment, I try to fix what I can. I don't just say "it'll get better."</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num" style="background:var(--accent6)">3</div>
+            <div class="step-body">
+              <div class="step-label">Let Them Leave With Respect</div>
+              <div class="step-desc">If they still want to go, I make sure the exit is smooth and professional. How someone leaves matters for the team's morale too.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENARIOS -->
+  <section id="scenarios" class="section">
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent)">
+        <div class="card-title"><span class="icon">⚡</span>Tough Situations — What You'd Do</div>
+        <ul class="point-list">
+          <li><span class="highlight">Client raises the target:</span> I won't just push the team to go faster. First, I sit down with other TLs, ACCM, and WFM to plan together. Then I raise the target step by step — not all at once — so quality doesn't drop.</li>
+          <li><span class="highlight">Managing your former friends:</span> On the floor, I'm professional. Off the floor, we're still friends. I tell them clearly from the start: "I care about you, and that's exactly why I have to be fair to everyone."</li>
+          <li><span class="highlight">Two mods are fighting:</span> I don't take sides. I give them space to calm down, listen to both of them separately, then bring them together to talk it out. I remind them: "We don't have to be best friends, but we have to respect each other at work."</li>
+        </ul>
+      </div>
+      <div class="card" style="--card-accent: var(--accent4)">
+        <div class="card-title"><span class="icon">🕒</span>When Things Get Chaotic</div>
+        <ul class="point-list">
+          <li><span class="highlight">Handling a shift alone or working late:</span> I prepare by knowing exactly what needs to be done. For complex cases, I ask the strongest mods to help. I track how fast everyone works so I can plan better next time. 1–2 extended sessions is okay — I solve it as fast as possible and learn from it.</li>
+          <li><span class="highlight">Suspicious sick leave:</span> I care about my team's health, so I always ask for proof. But I also check patterns — if someone is always "sick" right before their day off, that's a red flag. I'm kind to those who are genuinely unwell, but fair to the rest of the team too.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Q&A PREP -->
+  <section id="qa" class="section">
+    <div class="qa-list">
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-self">About You</span>Tell me about yourself. Why do you want to be a Team Leader?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "I've been with Teleperformance since November 2022. I started as a mod, and I was recognized as Best Agent in June 2023. That meant a lot to me, but over time I realized something — I don't just want to be good at the job myself. I want to help other people be good at it too. I'm applying for Team Leader because I genuinely enjoy guiding people, I communicate well, and I have a lot of empathy. I've seen how a good TL can really make a difference for the whole team. I'm ready for that responsibility."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-leadership">Leadership</span>What is your leadership style?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "I lead in a democratic way — but that doesn't mean I just let the team decide everything. It means I actually listen to them. My mods are the ones doing the work every day, so their feedback is really valuable. I take that input, think it through, and then make a clear decision. I balance three things: communication — I keep conversations open and two-way; fairness — I treat everyone equally and follow the guidelines; and flexibility — I adapt to each person's needs without being too strict or too soft."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-ops">Operations</span>How do you handle a mod who keeps missing KPI?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "First, I don't just jump to a solution — I find out why they're struggling. Is it a knowledge problem? Do they not understand the SOP? Or is something going on in their personal life? Once I know the root cause, I give the right kind of help. If it's knowledge, I work with TQA for a refreshment session and do live monitoring with them. If it's personal, I give them space and support. I also set small weekly goals so they can see their own progress. And I always appreciate the effort, not just the result. If nothing works after all of this, I follow the proper process — watchlist, warnings, and escalation to ACCM."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-people">Team</span>Bad performance but good attitude, or good performance but bad attitude — which do you pick?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "I'd always choose the person with bad performance but a good attitude. Here's why: performance is something we can fix. With the right training, coaching, and time, most people can improve. But attitude is much harder to change. If someone has a bad attitude, it doesn't just affect their own work — it brings the whole team down. I'd rather coach someone who's willing to learn than manage someone who doesn't want to be there. I can teach skills. It's very hard to teach someone to care."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-ops">Operations</span>What are your goals as a Team Leader?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "My first goal is to make sure my team consistently hits KPI — accuracy, AHT, and productivity. But beyond the numbers, I want to develop each person on my team. I want everyone to understand their work deeply, not just follow steps. And long-term? I want my team to produce the next Team Leader. If someone I coached gets promoted within a year, that's my biggest achievement as a TL. I don't want to be the only one who grows — I want to grow together with my team."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-self">Self</span>What is your weakness?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "My main weakness is that I'm new to the leadership role. I have a lot of experience as an agent, but leading a team is a different skill. I know I still have a lot to learn about things like managing different personalities, handling escalations, and making decisions under pressure. But that's exactly why I'm applying for this role — I see it as the opportunity to grow in those areas. I'm ready to learn, and I'm not afraid to ask for guidance when I need it."
+        </div></div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-q" onclick="toggleQA(this)">
+          <span><span class="q-cat cat-people">Team</span>How do you maintain a professional boundary with mods who used to be your friends?</span>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="qa-a"><div class="qa-a-inner">
+          "This is something I take seriously. On the floor, I have to be professional — that means equal treatment for everyone, no special favors, and clear expectations. Off the floor, we can still have a good relationship. I would tell my close colleagues early on: 'Nothing about our friendship changes, but my responsibilities do. I have to be fair to everyone, and I hope you understand that.' I think most people respect that kind of honesty. Fairness is how you earn respect as a new leader — not by being the most popular."
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section id="tips" class="section">
+    <div class="grid-2">
+      <div class="card" style="--card-accent: var(--accent)">
+        <div class="card-title"><span class="icon">🎤</span>How to Speak With Confidence</div>
+        <ul class="point-list">
+          <li><span class="highlight">Don't read from notes:</span> Practice your answers until they feel natural. Notes make you look unsure. Speaking from memory shows you believe what you're saying.</li>
+          <li><span class="highlight">Pause before you answer:</span> Take 2–3 seconds to think. It makes you look calm and thoughtful, not nervous.</li>
+          <li><span class="highlight">Use real examples:</span> Instead of saying "I'm good at handling outlier mods," say "When I had a mod who kept missing AHT, here's what I did…" Specifics are much more convincing.</li>
+          <li><span class="highlight">Own your weakness:</span> "I'm new to leadership, but that's exactly why I'm here — I want to learn it properly and grow." Confidence is about being honest, not being perfect.</li>
+          <li><span class="highlight">Speak slower than you think:</span> When we're nervous, we talk too fast. Slow down on purpose. It helps you sound clearer and more in control.</li>
+        </ul>
+      </div>
+
+      <div class="card" style="--card-accent: var(--accent3)">
+        <div class="card-title"><span class="icon">💬</span>Simple Phrases to Remember</div>
+        <ul class="point-list">
+          <li>"I can teach someone the skills. It's much harder to teach them to care."</li>
+          <li>"My job as TL is to make the people around me better — not just myself."</li>
+          <li>"I want my team to feel comfortable enough to ask me anything."</li>
+          <li>"The SOP is the starting point, not the finish line."</li>
+          <li>"A great team doesn't just hit KPI — it grows people who become the next leaders."</li>
+          <li>"I don't want my team to be afraid of me. I want them to trust me."</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tip-card" style="margin-top:1.5rem;">
+      <div class="tip-icon">🚀</div>
+      <div><span style="font-weight:700; color:var(--accent);">Remember This:</span> You have real experience. You've done the job. You know the SOP, the KPIs, the tools, and what it feels like to be a mod. Most candidates applying for TL don't have that. Use it. Speak from your own story — that's what makes you different. Be honest, be calm, and trust what you know. <strong>You're ready.</strong></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function switchTab(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const tabs = ['overview','leadership','operations','people','scenarios','qa','tips'];
+    const idx = tabs.indexOf(id);
+    document.querySelectorAll('.tab')[idx].classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleQA(el) {
+    const item = el.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
